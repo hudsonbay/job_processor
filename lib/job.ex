@@ -5,7 +5,21 @@ defmodule Jobber.Job do
   defstruct [:work, :id, :max_retries, retries: 0, status: "new"]
 
   def start_link(args) do
-    GenServer.start_link(__MODULE__, args)
+    args =
+      if Keyword.has_key?(args, :id) do
+        args
+      else
+        Keyword.put(args, :id, random_job_id())
+      end
+
+    id = Keyword.get(args, :id)
+    type = Keyword.get(args, :type)
+
+    GenServer.start_link(__MODULE__, args, name: via(id, type))
+  end
+
+  defp via(key, value) do
+    {:via, Registry, {Jobber.JobRegistry, key, value}}
   end
 
   def init(args) do
