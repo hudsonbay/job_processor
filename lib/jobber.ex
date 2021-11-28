@@ -3,16 +3,5 @@ defmodule Jobber do
   Documentation for `Jobber`.
   """
 
-  @doc """
-  Hello world.
 
-  ## Examples
-
-      iex> Jobber.hello()
-      :world
-
-  """
-  def hello do
-    :world
-  end
 end
