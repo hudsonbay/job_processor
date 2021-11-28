@@ -4,6 +4,10 @@ defmodule Jobber.Job do
 
   defstruct [:work, :id, :max_retries, retries: 0, status: "new"]
 
+  def start_link(args) do
+    GenServer.start_link(__MODULE__, args)
+  end
+
   def init(args) do
     work = Keyword.fetch!(args, :work)
 
