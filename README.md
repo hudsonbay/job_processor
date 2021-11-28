@@ -4,6 +4,10 @@ Job processsing system
 
 This is the result of following the book _Concurrent Data Processing in Elixir Fast, Resilient Applications with OTP, GenStage, Flow, and Broadway_ by Svilen Gospodinov
 
+This is how the supervision tree looks like:
+
+![](supervision_tree.png)
+
 ## How to interact with this project
 
 ```Elixir
