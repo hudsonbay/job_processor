@@ -46,4 +46,6 @@ iex (2)> Jobber.start_job(work: doomed_job)
 iex (3)> Process.whereis(Jobber.JobRunner)
 ```
 
-You will see the identifier will be different because the supervisor was restarted because it was uncapable of restarting that process, **ensuring the reliability of the system**. In this case, it happens because the GenServer has `:transient` restarting strategy.
+You will see the identifier will be different because the supervisor was restarted because it was uncapable of restarting that process, **ensuring the reliability of the system**. In this case, it happens because the GenServer has a `:transient` restarting strategy.
+
+**PD:** In other branches we can see different implementations for solutions to the same problem
