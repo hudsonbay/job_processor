@@ -25,7 +25,7 @@ defmodule Jobber.Job do
   def init(args) do
     work = Keyword.fetch!(args, :work)
 
-    id = Keyword.get(args, :id, random_job_id())
+    id = Keyword.get(args, :id)
     max_retries = Keyword.get(args, :max_retries, 3)
 
     state = %Jobber.Job{id: id, work: work, max_retries: max_retries}
