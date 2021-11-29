@@ -6,7 +6,7 @@ This is the result of following the book _Concurrent Data Processing in Elixir F
 
 This is how the supervision tree looks like:
 
-![](supervision_tree.png)
+![supervision_tree_diagram](supervision_tree.png)
 
 ## How to interact with this project
 
@@ -14,7 +14,7 @@ This is how the supervision tree looks like:
 # run a job like this
 GenServer.start(Jobber.Job, work: fn -> Process.sleep(5_000); {:ok, []} end)
 
-# run a job that fails (it assumes you will only have 3 automatic retries)
+# run a job that fails (it assumes we will only have 3 automatic retries)
 GenServer.start(Jobber.Job, work: fn -> Process.sleep(5_000); :error end)
 ```
 
@@ -33,9 +33,9 @@ Jobber.start_job(work: bad_job)
 Jobber.start_job(work: doomed_job)
 ```
 
-You can see that the `DynamicSupervisor` will be restarted everytime an exception occurs.
+We can see that the `DynamicSupervisor` will be restarted everytime an exception occurs.
 
-If you want to retrieve the `DynamicSupervisor`'s process identifier, do this:
+If we want to retrieve the `DynamicSupervisor`'s process identifier, do this:
 
 ```Elixir
 iex (1)> Process.whereis(Jobber.JobRunner)
@@ -46,6 +46,17 @@ iex (2)> Jobber.start_job(work: doomed_job)
 iex (3)> Process.whereis(Jobber.JobRunner)
 ```
 
-You will see the identifier will be different because the supervisor was restarted because it was uncapable of restarting that process, **ensuring the reliability of the system**. In this case, it happens because the GenServer has a `:transient` restarting strategy.
+We will see the identifier will be different because the supervisor was restarted because it was uncapable of restarting that process, **ensuring the reliability of the system**. In this case, it happens because the GenServer has a `:transient` restarting strategy.
+
+We can also limit concurrency for certain types of jobs. For example, try to start more than 3 jobs if type `import` like this:
+
+```Elixir
+Jobber.start_job(work: good_job, type: "import")
+Jobber.start_job(work: good_job, type: "import")
+Jobber.start_job(work: good_job, type: "import")
+
+# if you want you can add more sleeping time to the job if it's too fast for you
+Jobber.running_imports()
+```
 
 **PD:** In other branches we can see different implementations for solutions to the same problem
